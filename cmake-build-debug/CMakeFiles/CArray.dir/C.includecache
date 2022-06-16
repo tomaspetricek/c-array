@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/tomaspetricek/Programming/Languages/Cpp/courses/udemy/MasteringDataStructuresAndAlgorithms/ArrayADT/CArray/carray.h
+math.h
+-
+
+/Users/tomaspetricek/Programming/Languages/Cpp/courses/udemy/MasteringDataStructuresAndAlgorithms/ArrayADT/CArray/error.h
+string.h
+-
+
+/Users/tomaspetricek/Programming/Languages/Cpp/courses/udemy/MasteringDataStructuresAndAlgorithms/ArrayADT/CArray/main.c
+stdio.h
+-
+stdlib.h
+-
+error.h
+/Users/tomaspetricek/Programming/Languages/Cpp/courses/udemy/MasteringDataStructuresAndAlgorithms/ArrayADT/CArray/error.h
+carray.h
+/Users/tomaspetricek/Programming/Languages/Cpp/courses/udemy/MasteringDataStructuresAndAlgorithms/ArrayADT/CArray/carray.h
+
