@@ -8,12 +8,12 @@ int main()
 {
     int vals[] = {1, 2, 3, 4, 27};
     struct Array arr;
-    int err = Array_create(&arr, vals, 0, 10);
-    char err_msg[20];
+    int err = Array_create(&arr, vals, 5, 10);
 
-    if (err) {
-        get_error_message(err, err_msg);
-        printf("Cannot create array: %s\n", err_msg);
+    if (!err) {
+        Array_display(&arr);
+    }else {
+        log_error("Cannot create array", err);
         return err;
     }
 
@@ -25,8 +25,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot insert into sorted: %s\n", err_msg);
+        log_error("Cannot insert into sorted", err);
     }
 
     int sorted;
@@ -36,8 +35,7 @@ int main()
         printf("Is sorted: %d\n", sorted);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot check sorted: %s\n", err_msg);
+        log_error("Cannot check sorted", err);
     }
 
     // binary search
@@ -49,8 +47,7 @@ int main()
         printf("Value: %d is at index: %d\n", val, idx);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Binary search element: %s\n", err_msg);
+        log_error("Binary search element", err);
     }
 
     // copy array
@@ -63,8 +60,7 @@ int main()
         Array_free(&arr2);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot copy array: %s\n", err_msg);
+        log_error("Cannot copy array", err);
     }
 
     // max
@@ -75,8 +71,7 @@ int main()
         printf("Maximum is: %d\n", max);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot find maximum: %s\n", err_msg);
+        log_error("Cannot find maximum", err);
     }
 
     // sum
@@ -87,8 +82,7 @@ int main()
         printf("Sum is: %d\n", sum);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot calculate sum: %s\n", err_msg);
+        log_error("Cannot calculate sum", err);
     }
 
     // min
@@ -99,8 +93,7 @@ int main()
         printf("Min is: %d\n", min);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot find minimum: %s\n", err_msg);
+        log_error("Cannot find minimum", err);
     }
 
     // reverse
@@ -111,8 +104,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot reverse array: %s\n", err_msg);
+        log_error("Cannot reverse array", err);
     }
 
     // rotate right
@@ -123,8 +115,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot rotate right: %s\n", err_msg);
+        log_error("Cannot rotate right", err);
     }
 
     // rotate left
@@ -135,8 +126,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot rotate left: %s\n", err_msg);
+        log_error("Cannot rotate left", err);
     }
 
     // shift right
@@ -147,8 +137,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot shift right: %s\n", err_msg);
+        log_error("Cannot shift right", err);
     }
 
     // shift left
@@ -159,8 +148,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot shift left: %s\n", err_msg);
+        log_error("Cannot shift left", err);
     }
 
     // append an element
@@ -171,8 +159,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot append: %s\n", err_msg);
+        log_error("Cannot append", err);
     }
 
     // fill rest
@@ -183,8 +170,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot fill rest: %s\n", err_msg);
+        log_error("Cannot fill rest", err);
     }
 
     // insert an element
@@ -195,8 +181,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot insert: %s\n", err_msg);
+        log_error("Cannot insert", err);
     }
 
     // delete an element
@@ -207,8 +192,7 @@ int main()
         Array_display(&arr);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot delete: %s\n", err_msg);
+        log_error("Cannot delete", err);
     }
 
     // linear search
@@ -220,8 +204,7 @@ int main()
         printf("Value: %d is at index: %d", val, idx);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Linear search element: %s\n", err_msg);
+        log_error("Linear search element", err);
     }
 
     //int vals2[] = {-6, 3, -8, 10, 5, -7, -9, 12, -4, 2};
@@ -233,8 +216,7 @@ int main()
         Array_display(&arr3);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot create array: %s\n", err_msg);
+        log_error("Cannot create array", err);
         return EXIT_FAILURE;
     }
 
@@ -245,11 +227,48 @@ int main()
         Array_display(&arr3);
     }
     else {
-        get_error_message(err, err_msg);
-        printf("Cannot sign partition: %s\n", err_msg);
+        log_error("Cannot sign partition", err);
     }
 
     Array_free(&arr3);
+
+    // merge sorted arrays
+    int vals4[] = {0, 1, 3, 3, 4};
+    struct Array arr4;
+    err = Array_create(&arr4, vals4, 5, 5);
+
+    if (!err) {
+        printf("Array 4 created:\n");
+        Array_display(&arr4);
+    } else {
+        log_error("Cannot create array", err);
+        return EXIT_FAILURE;
+    }
+
+    int vals5[] = {-1, 2, 3, 4};
+    struct Array arr5;
+    err = Array_create(&arr5, vals5, 4, 4);
+
+    if (!err){
+        printf("Array 5 created:\n");
+        Array_display(&arr5);
+    }else{
+        log_error("Cannot create array", err);
+        return EXIT_FAILURE;
+    }
+
+    struct Array res;
+    err = Array_merge_sorted(&arr4, &arr5, &res);
+
+    if (!err) {
+        printf("Sorted arrays merged:\n");
+        Array_display(&res);
+    } else {
+        log_error("Cannot merge arrays", err);
+    }
+
+    Array_free(&arr4);
+    Array_free(&arr5);
     Array_free(&arr);
     return EXIT_SUCCESS;
 }

@@ -37,23 +37,22 @@ int Array_create(struct Array* arr, const int* vals, int length, int size)
     return EXIT_SUCCESS;
 }
 
+int Array_create_empty(struct Array* arr, int size)
+{
+    if (size<1) return INVALID_ARGUMENT;
+    arr->size = size;
+    arr->length = 0;
+
+    arr->data = (int*) malloc(sizeof(int)*size);
+
+    if (arr->data==NULL) return BAD_ALLOCATION;
+
+    return EXIT_SUCCESS;
+}
+
 void Array_free(struct Array* arr)
 {
     free(arr->data);
-}
-
-// time complexity:
-// best: O(1) - fill last element
-// worst: O(n) - fill all elements
-int Array_fill_rest(struct Array* arr, int val)
-{
-    if (arr->length==arr->size) return FULL;
-
-    for (int i = arr->length; i<arr->size; i++)
-        arr->data[i] = val;
-
-    arr->length = arr->size;
-    return EXIT_SUCCESS;
 }
 
 int Array_copy(const struct Array* src, struct Array* dest)
@@ -69,6 +68,20 @@ int Array_copy(const struct Array* src, struct Array* dest)
         dest->data[i] = src->data[i];
     }
 
+    return EXIT_SUCCESS;
+}
+
+// time complexity:
+// best: O(1) - fill last element
+// worst: O(n) - fill all elements
+int Array_fill_rest(struct Array* arr, int val)
+{
+    if (arr->length==arr->size) return FULL;
+
+    for (int i = arr->length; i<arr->size; i++)
+        arr->data[i] = val;
+
+    arr->length = arr->size;
     return EXIT_SUCCESS;
 }
 
@@ -350,6 +363,37 @@ int Array_sign_partition(struct Array* arr)
     return EXIT_SUCCESS;
 }
 
+// desc: combines two sorted arrays
+// time complexity: O(n)
+// note: append error should not happen if all assumptions hold thus there is no need for checking for it
+int Array_merge_sorted(const struct Array* fst, const struct Array* snd, struct Array* res)
+{
+    int size = fst->length+snd->length;
+    int err = Array_create_empty(res, size);
 
+    if (err) {
+        log_error("Cannot create result array", err);
+        return EXIT_FAILURE;
+    }
+
+    int fst_idx = 0, snd_idx = 0;
+
+    while (fst_idx<fst->length && snd_idx<snd->length) {
+        if (fst->data[fst_idx]<=snd->data[snd_idx])
+            Array_append(res, fst->data[fst_idx++]);
+        else
+            Array_append(res, snd->data[snd_idx++]);
+    }
+
+    // copy remaining elements from first array
+    for (; fst_idx<fst->length; fst_idx++)
+        Array_append(res, fst->data[fst_idx]);
+
+    // copy remaining elements from second element
+    for (; snd_idx<snd->length; snd_idx++)
+        Array_append(res, snd->data[snd_idx]);
+
+    return EXIT_SUCCESS;
+}
 
 #endif //CODE_CARRAY_H
