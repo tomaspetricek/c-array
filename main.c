@@ -224,6 +224,32 @@ int main()
         printf("Linear search element: %s\n", err_msg);
     }
 
+    //int vals2[] = {-6, 3, -8, 10, 5, -7, -9, 12, -4, 2};
+    int vals2[] = {1, -2, -3, -4, -5, -6, -7, -8, -9, -10};
+    struct Array arr3;
+    err = Array_create(&arr3, vals2, 10, 10);
+
+    if (!err) {
+        Array_display(&arr3);
+    }
+    else {
+        get_error_message(err, err_msg);
+        printf("Cannot create array: %s\n", err_msg);
+        return EXIT_FAILURE;
+    }
+
+    err = Array_sign_partition(&arr3);
+
+    if (!err) {
+        printf("Sign partition:\n");
+        Array_display(&arr3);
+    }
+    else {
+        get_error_message(err, err_msg);
+        printf("Cannot sign partition: %s\n", err_msg);
+    }
+
+    Array_free(&arr3);
     Array_free(&arr);
     return EXIT_SUCCESS;
 }

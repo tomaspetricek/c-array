@@ -7,6 +7,8 @@
 
 #include <math.h>
 
+#include "error.h"
+
 // Based on Udemy course:
 // - title: Mastering Data Structures & Algorithms using C and C++
 // - link: https://www.udemy.com/course/datastructurescncpp/
@@ -308,6 +310,9 @@ int Array_sorted_insert(struct Array* arr, int val)
 }
 
 // check if array is sorted in ascending order
+// time complexity:
+// - best: O(1) - first 2 not sorted
+// - worst: O(n) - is sorted
 int Array_sorted(const struct Array* arr, int* sorted)
 {
     if (arr->length==0) return EMPTY;
@@ -322,5 +327,29 @@ int Array_sorted(const struct Array* arr, int* sorted)
 
     return EXIT_SUCCESS;
 }
+
+// time complexity: O(n)
+int Array_sign_partition(struct Array* arr)
+{
+    if (arr->length==0) return EMPTY;
+
+    int neg_idx = 0;
+    int pos_idx = arr->length-1;
+
+    while (neg_idx<pos_idx) {
+        while (arr->data[neg_idx]<0 && neg_idx<arr->length)
+            neg_idx++;
+
+        while (arr->data[pos_idx]>=0 && pos_idx>=0)
+            pos_idx--;
+
+        if (neg_idx<pos_idx)
+            swap(&arr->data[neg_idx], &arr->data[pos_idx]);
+    }
+
+    return EXIT_SUCCESS;
+}
+
+
 
 #endif //CODE_CARRAY_H
