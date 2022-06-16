@@ -7,8 +7,8 @@
 
 #include <string.h>
 
-#define NOT_FOUND 2
-#define OUT_OF_RANGE 3
+#define ELEMENT_NOT_FOUND 2
+#define INDEX_OUT_OF_BOUNDS 3
 #define BAD_ALLOCATION 4
 #define INVALID_ARGUMENT 5
 #define FULL 6
@@ -19,14 +19,14 @@
 void get_error_message(int err, char* msg)
 {
     switch (err) {
-    case(EXIT_FAILURE):
+    case (EXIT_FAILURE):
         strcpy(msg, "exit failure");
         break;
-    case (NOT_FOUND):
-        strcpy(msg, "not found");
+    case (ELEMENT_NOT_FOUND):
+        strcpy(msg, "element not found");
         break;
-    case (OUT_OF_RANGE):
-        strcpy(msg, "out of range");
+    case (INDEX_OUT_OF_BOUNDS):
+        strcpy(msg, "index out of bounds");
         break;
     case (BAD_ALLOCATION):
         strcpy(msg, "bad allocation");
@@ -46,7 +46,8 @@ void get_error_message(int err, char* msg)
     }
 }
 
-void log_error(char* msg, int err){
+void log_error(char* msg, int err)
+{
     char err_msg[MAX_ERR_MSG_SIZE];
     get_error_message(err, err_msg);
     printf("%s: %s\n", msg, err_msg);

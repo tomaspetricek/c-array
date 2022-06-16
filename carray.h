@@ -99,7 +99,7 @@ void Array_display(const struct Array* arr)
 int Array_insert(struct Array* arr, unsigned int idx, int val)
 {
     if (arr->length==0) return EMPTY;
-    if (idx<0 || idx>arr->length-1) return OUT_OF_RANGE;
+    if (idx<0 || idx>arr->length-1) return INDEX_OUT_OF_BOUNDS;
 
     for (int i = arr->length; i>idx; i--) {
         arr->data[i] = arr->data[i-1];
@@ -127,7 +127,7 @@ int Array_append(struct Array* arr, int val)
 int Array_delete(struct Array* arr, int idx)
 {
     if (arr->length==0) return EMPTY;
-    if (idx<0 || idx>=arr->length) return OUT_OF_RANGE;
+    if (idx<0 || idx>=arr->length) return INDEX_OUT_OF_BOUNDS;
 
     for (int i = idx; i<arr->length-1; i++)
         arr->data[i] = arr->data[i+1];
@@ -148,7 +148,7 @@ int Array_linear_search(const struct Array* arr, int val, int* idx)
             return EXIT_SUCCESS;
         }
 
-    return NOT_FOUND;
+    return ELEMENT_NOT_FOUND;
 }
 
 // elements in the array have to be sorted
@@ -174,14 +174,14 @@ int Array_binary_search(const struct Array* arr, int val, int* idx)
         }
     }
 
-    return NOT_FOUND;
+    return ELEMENT_NOT_FOUND;
 }
 
 // time complexity: O(1)
 int Array_get(const struct Array* arr, int idx, int* val)
 {
     if (arr->length==0) return EMPTY;
-    if (idx<0 || idx>=arr->length) return OUT_OF_RANGE;
+    if (idx<0 || idx>=arr->length) return INDEX_OUT_OF_BOUNDS;
 
     *val = arr->data[idx];
     return EXIT_SUCCESS;
@@ -190,7 +190,7 @@ int Array_get(const struct Array* arr, int idx, int* val)
 int Array_set(struct Array* arr, int idx, int val)
 {
     if (arr->length==0) return EMPTY;
-    if (idx<0 || idx>=arr->length) return OUT_OF_RANGE;
+    if (idx<0 || idx>=arr->length) return INDEX_OUT_OF_BOUNDS;
 
     arr->data[idx] = val;
     return EXIT_SUCCESS;
