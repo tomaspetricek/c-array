@@ -48,7 +48,7 @@ void get_error_message(int err, char* msg)
 
 void log_error(char* msg, int err)
 {
-    char err_msg[MAX_ERR_MSG_SIZE];
+    static char err_msg[MAX_ERR_MSG_SIZE];
     get_error_message(err, err_msg);
     printf("%s: %s\n", msg, err_msg);
 }

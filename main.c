@@ -258,7 +258,7 @@ int main()
     }
 
     struct Array res;
-    err = Array_merge_sorted(&arr4, &arr5, &res);
+    err = Array_sorted_merge(&arr4, &arr5, &res);
 
     if (!err) {
         printf("Sorted arrays merged:\n");
@@ -267,8 +267,89 @@ int main()
         log_error("Cannot merge arrays", err);
     }
 
+    Array_free(&res);
+
+
+    // union
+    int vals6[] = {0, 10, 15, 1, 7};
+    struct Array arr6;
+    err = Array_create(&arr6, vals6, 5, 5);
+
+    if (!err) {
+        printf("Array 6 created:\n");
+        Array_display(&arr6);
+    } else {
+        log_error("Cannot create array", err);
+        return EXIT_FAILURE;
+    }
+
+    int vals7[] = {0, 9, 12, 100, 1, 10};
+    struct Array arr7;
+    err = Array_create(&arr7, vals7, 6, 6);
+
+    if (!err){
+        printf("Array 7 created:\n");
+        Array_display(&arr7);
+    }else{
+        log_error("Cannot create array", err);
+        return EXIT_FAILURE;
+    }
+
+    err = Array_union(&arr6, &arr7, &res);
+
+    if (!err) {
+        printf("Union of two arrays\n");
+        Array_display(&res);
+    } else {
+        log_error("Cannot make union", err);
+    }
+
+    Array_free(&arr6);
+    Array_free(&arr7);
+    Array_free(&res);
+
+    // sorted union
+    int vals8[] = {2, 3, 4, 7, 10};
+    struct Array arr8;
+    err = Array_create(&arr8, vals8, 5, 5);
+
+    if (!err) {
+        printf("Array 8 created:\n");
+        Array_display(&arr8);
+    } else {
+        log_error("Cannot create array", err);
+        return EXIT_FAILURE;
+    }
+
+    int vals9[] = {0, 1, 2, 3, 4, 7};
+    struct Array arr9;
+    err = Array_create(&arr9, vals9, 6, 6);
+
+    if (!err){
+        printf("Array 9 created:\n");
+        Array_display(&arr9);
+    }else{
+        log_error("Cannot create array", err);
+        return EXIT_FAILURE;
+    }
+
+    err = Array_sorted_union(&arr8, &arr9, &res);
+
+    if (!err) {
+        printf("Union of two sorted arrays\n");
+        Array_display(&res);
+    } else {
+        log_error("Cannot make union", err);
+    }
+
+    Array_free(&arr8);
+    Array_free(&arr9);
+    Array_free(&res);
+
     Array_free(&arr4);
     Array_free(&arr5);
     Array_free(&arr);
+
+    Array
     return EXIT_SUCCESS;
 }

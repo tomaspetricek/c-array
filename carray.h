@@ -64,9 +64,8 @@ int Array_copy(const struct Array* src, struct Array* dest)
     // unable to allocate
     if (dest->data==NULL) return BAD_ALLOCATION;
 
-    for (int i = 0; i<dest->size; i++) {
+    for (int i = 0; i<dest->size; i++)
         dest->data[i] = src->data[i];
-    }
 
     return EXIT_SUCCESS;
 }
@@ -363,10 +362,10 @@ int Array_sign_partition(struct Array* arr)
     return EXIT_SUCCESS;
 }
 
-// desc: combines two sorted arrays
+// desc: merges together two sorted arrays in a single array
 // time complexity: O(n)
 // note: append error should not happen if all assumptions hold thus there is no need for checking for it
-int Array_merge_sorted(const struct Array* fst, const struct Array* snd, struct Array* res)
+int Array_sorted_merge(const struct Array* fst, const struct Array* snd, struct Array* res)
 {
     int size = fst->length+snd->length;
     int err = Array_create_empty(res, size);
@@ -394,6 +393,162 @@ int Array_merge_sorted(const struct Array* fst, const struct Array* snd, struct 
         Array_append(res, snd->data[snd_idx]);
 
     return EXIT_SUCCESS;
+}
+
+// desc:
+// - creates union of elements from first and second array
+// - array must contain unique elements
+// time complexity: O(n^2)
+int Array_union(const struct Array* fst, const struct Array* snd, struct Array* res)
+{
+    int err;
+    if (fst->length==0) {
+        err = Array_copy(snd, res);
+
+        if (err) {
+            log_error("Cannot copy first array", err);
+            return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+    }
+    else if (snd->length==0) {
+        err = Array_copy(fst, res);
+
+        if (err) {
+            log_error("Cannot copy second array", err);
+            return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+    }
+
+    int size = fst->length+snd->length;
+    err = Array_create_empty(res, size);
+
+    if (err) {
+        log_error("Cannot create empty result array", err);
+        return EXIT_FAILURE;
+    }
+
+    // copy first array
+    for (int i = 0; i<fst->length; i++)
+        Array_append(res, fst->data[i]);
+
+    int idx;
+    for (int i = 0; i<snd->length; i++) {
+        err = Array_linear_search(res, snd->data[i], &idx); // O(n)
+
+        if (err==ELEMENT_NOT_FOUND)
+            Array_append(res, snd->data[i]);
+    }
+
+    return EXIT_SUCCESS;
+}
+
+// desc:
+// - creates union of elements from first and second array
+// - array must contain unique elements and must be sorted
+// time complexity: 0(n+m)
+int Array_sorted_union(const struct Array* fst, const struct Array* snd, struct Array* res)
+{
+    int err;
+    if (fst->length==0) {
+        err = Array_copy(snd, res);
+
+        if (err) {
+            log_error("Cannot copy first array", err);
+            return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+    }
+    else if (snd->length==0) {
+        err = Array_copy(fst, res);
+
+        if (err) {
+            log_error("Cannot copy second array", err);
+            return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+    }
+
+    int size = fst->length+snd->length;
+    err = Array_create_empty(res, size);
+
+    if (err) {
+        log_error("Cannot create result array", err);
+        return EXIT_FAILURE;
+    }
+
+    int fst_idx = 0, snd_idx = 0;
+
+    while (fst_idx<fst->length && snd_idx<snd->length) {
+        if (fst->data[fst_idx]<snd->data[snd_idx])
+            Array_append(res, fst->data[fst_idx++]);
+        else if (fst->data[fst_idx]==snd->data[snd_idx]) {
+            Array_append(res, fst->data[fst_idx++]);
+            snd_idx++;
+        }
+        else {
+            Array_append(res, snd->data[snd_idx++]);
+        }
+    }
+
+    // copy remaining elements from first array
+    for (; fst_idx<fst->length; fst_idx++)
+        Array_append(res, fst->data[fst_idx]);
+
+    // copy remaining elements from second element
+    for (; snd_idx<snd->length; snd_idx++)
+        Array_append(res, snd->data[snd_idx]);
+
+    return EXIT_SUCCESS;
+}
+
+// desc:
+// - creates an array containing elements that are in both arrays
+// - first and second array have to be arrays with unique elements
+// time complexity: O(m*n) ~= O(n^2)
+int Array_intersection(const struct Array* fst, const struct Array* snd, struct Array* res)
+{
+    int err;
+
+    if (fst->length==0 || snd->length==0) {
+        err = Array_create_empty(res, 1);
+
+        if (err) {
+            log_error("Cannot create result array", err);
+            return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+    }
+
+    int size = fst->length+snd->length;
+    err = Array_create_empty(res, size);
+
+    if (err) {
+        log_error("Cannot create result array", err);
+        return EXIT_FAILURE;
+    }
+
+    int idx;
+    for (int fst_idx = 0; fst_idx<fst->length; fst_idx++) {
+        err = Array_linear_search(snd, fst->data[fst_idx], &idx); // O(n)
+
+        if (!err) Array_append(res, fst->data[fst_idx]);
+    }
+
+    return EXIT_SUCCESS;
+}
+
+// desc:
+// time complexity:
+void Array_difference(const struct Array* fst, const struct Array* snd, struct Array* res)
+{
+
 }
 
 #endif //CODE_CARRAY_H
